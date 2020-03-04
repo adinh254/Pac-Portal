@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "c5b36c1553bbbbd9c16f08d41a733c703d80b10557acc71081adb0077953d0b0"
+            "sha256": "03b1410ab18fa2e4f51070dc496d47fef9731279b9e1a47ba70a875655872b0d"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -16,6 +16,10 @@
         ]
     },
     "default": {
+        "pacportal": {
+            "editable": true,
+            "path": "."
+        },
         "pygame": {
             "hashes": [
                 "sha256:0480fe82cd41a43e3eea497fa2c059c72ac54cb5d003d5aa2ed06a04541c384e",
@@ -45,14 +49,12 @@
                 "sha256:f1f5714d2c23f6a64ef2ac4fcd36a2dd2689da85978d951a99a6ae5dfdf9bdbc",
                 "sha256:fa788f775680fc5d268ab00a2da29c9a22830032cfab732730298a2952cd87f3"
             ],
-            "index": "pypi",
             "version": "==1.9.6"
         },
         "pytmx": {
             "hashes": [
                 "sha256:f6e9c1faaf689cea5a568eed06edf0b811b192c8b71bb5ec9d22fe3f61938fa7"
             ],
-            "index": "pypi",
             "version": "==3.21.7"
         },
         "six": {

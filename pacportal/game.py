@@ -4,7 +4,8 @@ import pygame
 import pytmx
 from pytmx import load_pygame
 
-import entity
+from eventhandler import inputhandler
+from entity.pacman import PacMan
 from spritesheet.spriteanimation import SpriteAnimation
 
 pygame.init()
@@ -27,12 +28,15 @@ pacman_sprites = pygame.image.load( str( ( base_path / "../assets/atlas/pacman_a
 
 loaded_animations = [ SpriteAnimation( pacman_sprites, ( 0, 0, 16, 16 ), 3, True, 12 ) ]
 
-player = entity.pacman.PacMan( ( SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 ), loaded_animations[0], 10 )
+# Pacman moves at 11 tiles per second ( 176px per second )
+player = PacMan( ( SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 ), loaded_animations[0], 11 )
 
 def gameLoop():
     game_exit = False
     while not game_exit:
         for event in pygame.event.get():
+            # if event.type == pygame.KEYDOWN:
+                # TODO: Input handling
             if event.type == pygame.QUIT:
                 game_exit = True
         # draw map data on screen
@@ -47,8 +51,8 @@ def gameLoop():
                 image = game_map.get_tile_image_by_gid( layer.gid )
                 if ( image ):
                     image.convert()
-                    screen.blit( image, (0, 0) )
-        screen.blit( player.render() )
+                    screen.blit( image, ( 0, 0 ) )
+        screen.blit( player.render(), ( 0, 0 ) )
         pygame.display.update()
         clock.tick( 30 )
 

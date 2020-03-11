@@ -12,6 +12,8 @@ class PacMan(pygame.sprite.Sprite):
         self.animation = animation
         self.speed = speed
         self.direction_vector = Vector2( 0, 0 )
+        self.queued_vector = Vector2( 0, 0 )
+        self.velocity = Vector2( 0, 0 )
         self.orientation = 0
 
     def move( self ):
@@ -22,9 +24,11 @@ class PacMan(pygame.sprite.Sprite):
             self.animation.setNextFrame()
 
     def changeDirection( self, velocity ):
+        # Normalize vector if magnitude is greater than 1
         input_direction = velocity.normalize()
 
         if input_direction.magnitude_squared() != 0.0:
+            # If pacman is not moving
             if self.direction_vector.magnitude_squared() == 0.0:
                 if input_direction.x < 0:
                     rotation_angle = 180
@@ -34,15 +38,22 @@ class PacMan(pygame.sprite.Sprite):
                     rotation_angle = 0
                 self.orientation = rotation_angle % 360
                 self.direction_vector = input_direction
-            # If pacman is currently moving
-            elif self.direction_vector.dot( input_direction ) >= 0:
-                rotation_angle = self.direction_vector.cross( input_direction ) * -90
-                self.orientation = ( self.orientation + rotation_angle ) % 360
-                self.direction_vector = input_direction
-            else:
+            # Allows pacman to always turn around in place
+            elif self.direction_vector.dot( input_direction ) < 0:
                 self.orientation = (self.orientation + 180 ) % 360
                 self.direction_vector = input_direction
+                self.queued_vector = Vector2( 0, 0 )
+            # Queued direction vector
+            # TODO: If in a direction tile execute queued vector
+            else:
+                # rotation_angle = self.direction_vector.cross( input_direction ) * -90
+                # self.orientation = ( self.orientation + rotation_angle ) % 360
+                self.queued_vector = input_direction
+        else:
+            self.direction_vector = input_direction
 
+    def getVelocity( self ):
+        return self.velocity
 
     def render( self ):
         image = self.animation.getCurrentFrame()
@@ -51,5 +62,5 @@ class PacMan(pygame.sprite.Sprite):
 
     def getPosition( self ):
         offset = Vector2( self.box.center )
-        position = ( self.position.x - offset.x, self.position.y - offset.y )
+        position = Vector2( self.position.x - offset.x, self.position.y - offset.y )
         return position
